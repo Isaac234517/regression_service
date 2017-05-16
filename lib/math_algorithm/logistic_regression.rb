@@ -1,15 +1,16 @@
 class LogisticRegression
-  def initialize(x,y,theta)
+  attr_reader :x,:y,:thetas
+  def initialize(x,y,thetas)
   	@x = x
   	@y = y 
-  	@theta = theta
+  	@thetas = thetas
   end
 
   def z_func
   	ans = []
   	@x.each do |ele|
   		row_ans = ele.each_with_index.inject(0) do |initial_value, (sub_ele,sub_index)|
-  			initial_value += (sub_ele * @theta[sub_index])
+  			initial_value += (sub_ele * @thetas[sub_index])
   		end
   		ans << row_ans
   	end
@@ -23,14 +24,14 @@ class LogisticRegression
   	cost = 1/(@x.length.to_f) * sigma(sigma_part)
   end
 
-  def sigmod(z)
+  def sigmoid(z)
     1/(1+ Math.exp(0-z))
   end
 
   def hy_part(z)
   	ans = []
   	z.each_with_index do |element, index|
-  		ans << ((0-@y[index]) * Math.log(sigmod(element))- (1-@y[index]) * Math.log(1-sigmod(element)))
+  		ans << ((0-@y[index]) * Math.log(sigmoid(element))- (1-@y[index]) * Math.log(1-sigmoid(element)))
   	end
   	ans
   end
@@ -46,13 +47,12 @@ class LogisticRegression
     z = z_func
     result = []
     trans_x = tranpose(@x)
-    p 'trans_x', trans_x
-    p 'x', @x
-    trans_x.each do |ele|
-      z.each.with_index do |sub_ele,index|
-        tmp_result = sigma(sub_ele)-@y[index]
-      trans_x.
+    arr_part = z.map.with_index{|element,index| sigmoid(element)-@y[index]}
+    new_thetas = trans_x.map do |trans_element|
+      product = trans_element.each_with_index.inject(0){|sum, (sub_element,index)| sum+=arr_part[index] * sub_element}
+      product /= @x.length
     end
+    new_thetas
   end
 
   def tranpose(arr)
