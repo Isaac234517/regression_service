@@ -1,9 +1,14 @@
 class LogisticRegression
-  attr_reader :x,:y,:thetas
+  attr_reader :x,:y
+  attr_accessor :thetas
   def initialize(x,y,thetas)
   	@x = x
   	@y = y 
   	@thetas = thetas
+  end
+
+  def update_thetas(gradient,learning_rate)
+    @thetas = @thetas.map.with_index {|theta,index| theta-(learning_rate *gradient[index])}
   end
 
   def z_func
@@ -31,6 +36,12 @@ class LogisticRegression
   def hy_part(z)
   	ans = []
   	z.each_with_index do |element, index|
+      #p "element#{element}"
+      #p (1-@y[index]) * Math.log(1-sigmoid(element))
+      #part1 = (0-@y[index]) * Math.log(sigmoid(element))
+      #part2 = (1-@y[index]) * Math.log(1-sigmoid(element))
+      #part2 = 0 if part2.nan?
+      #ans << (part1-part2)
   		ans << ((0-@y[index]) * Math.log(sigmoid(element))- (1-@y[index]) * Math.log(1-sigmoid(element)))
   	end
   	ans
@@ -48,11 +59,11 @@ class LogisticRegression
     result = []
     trans_x = tranpose(@x)
     arr_part = z.map.with_index{|element,index| sigmoid(element)-@y[index]}
-    new_thetas = trans_x.map do |trans_element|
+    gradient = trans_x.map do |trans_element|
       product = trans_element.each_with_index.inject(0){|sum, (sub_element,index)| sum+=arr_part[index] * sub_element}
       product /= @x.length
     end
-    new_thetas
+    gradient
   end
 
   def tranpose(arr)
