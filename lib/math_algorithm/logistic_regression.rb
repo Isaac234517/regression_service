@@ -57,24 +57,13 @@ class LogisticRegression
   def gradient_descent
     z = z_func
     result = []
-    trans_x = tranpose(@x)
+    trans_x = MathUtil.transpose(@x)
     arr_part = z.map.with_index{|element,index| sigmoid(element)-@y[index]}
     gradient = trans_x.map do |trans_element|
       product = trans_element.each_with_index.inject(0){|sum, (sub_element,index)| sum+=arr_part[index] * sub_element}
       product /= @x.length
     end
     gradient
-  end
-
-  def tranpose(arr)
-    tmp_arr = []
-    arr.each.with_index do |ele|
-      ele.each.with_index do |sub_ele, sub_index|
-        tmp_arr[sub_index]||=[]
-        tmp_arr[sub_index] << ele[sub_index]
-      end
-    end
-    tmp_arr
   end
 
   def self.divide_data(data)
