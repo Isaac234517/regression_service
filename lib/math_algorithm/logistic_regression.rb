@@ -54,7 +54,7 @@ class LogisticRegression
     result
   end
 
-  def grad_descent
+  def gradient_descent
     z = z_func
     result = []
     trans_x = tranpose(@x)
