@@ -7,11 +7,9 @@ class LinearRegressionController < ApplicationController
   	num = 0
   	begin 
   	  gradient = @handler.gradient_descent
-  	  p gradient
   	  @handler.update_thetas(gradient,0.01)
   	  p "After upate thetas at iteration #{num+1} #{@handler.thetas.inspect}"
   	  new_cost = @handler.cost_function
-  	  p new_cost
   	  break if new_cost - cost >=0.01
   	  cost = new_cost
   	  num+=1
@@ -42,16 +40,16 @@ class LinearRegressionController < ApplicationController
 
   def parse_params
     data_string = params['data'] || request.body.read
-    data = JSON.parse(data_string)
-    raise 'error' unless data.key?('dataset')
-    x_y = LinearRegression.divide_data(data['dataset'])
-    unless data.key?('thetas')
+    data = MultiJson.load(data_string, :symbolize_keys => true)
+    raise 'error' unless data.key?(:dataset)
+    x_y = LinearRegression.divide_data(data[:dataset])
+    unless data.key?(:thetas)
       thetas = x_y[0][0].map{|ele| 0}
     else
-      thetas = data['thetas']
+      thetas = data[:thetas]
     end
     @handler = LinearRegression.new(x_y[0], x_y[1], thetas)
-    @iterations =  data['iterations'] if data.key?('iterations')
+    @iterations =  data[:iterations] if data.key?(:iterations)
   end
 
 end

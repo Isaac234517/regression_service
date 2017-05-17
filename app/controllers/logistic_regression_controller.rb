@@ -31,20 +31,20 @@ class LogisticRegressionController < ApplicationController
     p "run gradient descent at thetas #{@handler.thetas.inspect}"
     gradient = @handler.gradient_descent
     p "gradient is #{gradient.inspect}"
-    send_respond({'cost' => cost, 'gradient' => gradient})
+    send_respond({:cost => cost, :gradient => gradient})
   end
 
   def parse_params
-    data_string = params['data'] || request.body.read
-    data = JSON.parse(data_string)
-    raise 'error' unless data.key?('dataset')
-    x_y = LogisticRegression.divide_data(data['dataset'])
-    unless data.key?('thetas')
+    data_string = params[:data] || request.body.read
+    data = MultiJson.load(data_string, :symbolize_keys => true)
+    raise 'error' unless data.key?(:dataset)
+    x_y = LogisticRegression.divide_data(data[:dataset])
+    unless data.key?(:thetas)
       thetas = x_y[0][0].map{|ele| 0}
     else
-      thetas = data['thetas']
+      thetas = data[:thetas]
     end
     @handler = LogisticRegression.new(x_y[0], x_y[1], thetas)
-    @iterations =  data['iterations'] if data.key?('iterations')
+    @iterations =  data[:iterations] if data.key?(:iterations)
   end
 end
