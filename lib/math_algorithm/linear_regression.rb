@@ -5,7 +5,7 @@ class LinearRegression
   def initialize(x,y, thetas)
   	@x = x
   	@y = y
-  	@thetas = @thetas
+  	@thetas = thetas
   end
 
   def update_thetas(gradient,alpha)
@@ -19,8 +19,8 @@ class LinearRegression
   	 sqr_error = h.map.with_index do |element, index|
   	 	(element - @y[index]) * (element - @y[index])
   	 end
-  	 summatation = sq_error.inject(0) {|sum, element| sum+=element}
-  	 summatation / (2 * @x.length)
+  	 summatation = sqr_error.inject(0) {|sum, element| sum+=element}
+     summatation / ((2 * @x.length).to_f)
   end
 
   def gradient_descent
@@ -33,13 +33,14 @@ class LinearRegression
      	summatation = element.each_with_index.inject(0) do |sum,(sub_element, sub_index)|
      		sum+= sub_element * difference[sub_index]
      	end
+     	summatation/(@x.length).to_f
      end
      grad 
   end
 
   def hypothesis
-  	@x.map do |element|
-  	   element.each_with_index.inject(0) do |sum,(sub_element,sub_index)|
+    @x.map do |element|
+  	   b = element.each_with_index.inject(0) do |sum,(sub_element,sub_index)|
   	   	  sum += sub_element * @thetas[sub_index]
   	   end
   	end
@@ -54,10 +55,10 @@ class LinearRegression
   	       x[index] ||=[]
   	  	   x[index] << sub_element
   	  	else
-  	  	   y[index] = []
   	  	   y << sub_element
   	  	end
   	  end
+  	  x[index].unshift(1)
   	end
   	[x,y]
   end
