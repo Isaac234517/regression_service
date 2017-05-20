@@ -1,6 +1,6 @@
 class LogisticRegression
-  attr_reader :x,:y
-  attr_accessor :thetas
+  attr_reader :y
+  attr_accessor :x,:thetas
   def initialize(x,y,thetas)
   	@x = x
   	@y = y 
