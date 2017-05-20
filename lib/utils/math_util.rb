@@ -14,7 +14,7 @@ class MathUtil
       summatation = arr.inject(0){|sum, element| 
          sum+=element
       }
-      summatation/arr.length
+      summatation/arr.length.to_f
     end
 
     def self.variance(arr)

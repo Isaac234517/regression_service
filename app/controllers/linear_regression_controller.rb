@@ -2,6 +2,15 @@ class LinearRegressionController < ApplicationController
   before_action :parse_params
 
   def find_best_thetas
+    if(@stanardization == true)
+      transpose_feature = MathUtil.transpose(@handler.x)
+      after_standardization = transpose_feature.map.with_index do |element, index|
+        MathUtil.standardization(element) if index !=0
+      end
+      transpose_feature = [transpose_feature[0]] + after_standardization.compact
+      @handler.x = MathUtil.transpose(transpose_feature)
+    end
+
   	cost = @handler.cost_function
   	p "Initial thetas is #{@handler.thetas.inspect}"
   	num = 0
@@ -50,6 +59,7 @@ class LinearRegressionController < ApplicationController
     end
     @handler = LinearRegression.new(x_y[0], x_y[1], thetas)
     @iterations =  data[:iterations] if data.key?(:iterations)
+    @stanardization = data[:stanardization]
   end
 
 end
