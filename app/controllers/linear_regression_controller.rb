@@ -2,7 +2,7 @@ class LinearRegressionController < ApplicationController
   before_action :parse_params
 
   def find_best_thetas
-    if(@stanardization == true)
+    if(@standardization == true)
       transpose_feature = MathUtil.transpose(@handler.x)
       after_standardization = transpose_feature.map.with_index do |element, index|
         MathUtil.standardization(element) if index !=0
@@ -59,7 +59,7 @@ class LinearRegressionController < ApplicationController
     end
     @handler = LinearRegression.new(x_y[0], x_y[1], thetas)
     @iterations =  data[:iterations] if data.key?(:iterations)
-    @stanardization = data[:stanardization]
+    @standardization = data[:standardization]
   end
 
 end
