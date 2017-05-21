@@ -1,19 +1,32 @@
 class LogisticRegressionController < ApplicationController
   before_action :parse_params
+
   def find_best_thetas
     raise 'error' if @iterations.nil?
+    if @standardization == true
+      transpose_feature = MathUtil.transpose(@handler.x)
+      after_standardization = transpose_feature.map.with_index do |element, index|
+        MathUtil.standardization(element) if index !=0
+      end
+      transpose_feature = [transpose_feature[0]] + after_standardization.compact
+      @handler.x = MathUtil.transpose(transpose_feature)
+    end
+
     cost = @handler.cost_function
-    arr = []
-    (@iterations-1).times{ |num|
+    p "Initial Thetas is #{@handler.thetas.inspect}"
+    num = 0
+    begin
+      num+=1
       gradient = @handler.gradient_descent
-      @handler.update_thetas(gradient, 0.01)
+      @handler.update_thetas(gradient, 0.08)
       p "thetas #{@handler.thetas.inspect} at iteration #{num}"
       new_cost = @handler.cost_function
       p "new cost #{new_cost}"
-      break if new_cost - cost>=0
+      break if new_cost - cost>=0.01
       cost = new_cost
-    }
-    p "new theta is #{@handler.thetas.inspect}"
+    end while num < @iterations
+
+    p "Best thetas is #{@handler.thetas.inspect} after running #{num} iterations"
     send_respond({'best_thetas' => @handler.thetas})
   end
 
@@ -46,5 +59,6 @@ class LogisticRegressionController < ApplicationController
     end
     @handler = LogisticRegression.new(x_y[0], x_y[1], thetas)
     @iterations =  data[:iterations] if data.key?(:iterations)
+    @standardization = data[:standardization]
   end
 end
