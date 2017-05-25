@@ -18,7 +18,7 @@ class LogisticRegressionController < ApplicationController
     begin
       num+=1
       gradient = @handler.gradient_descent
-      @handler.update_thetas(gradient, 0.08)
+      @handler.update_thetas(gradient, @learning_rate)
       p "thetas #{@handler.thetas.inspect} at iteration #{num}"
       new_cost = @handler.cost_function
       p "new cost #{new_cost}"
@@ -60,5 +60,6 @@ class LogisticRegressionController < ApplicationController
     @handler = LogisticRegression.new(x_y[0], x_y[1], thetas)
     @iterations =  data[:iterations] if data.key?(:iterations)
     @standardization = data[:standardization]
+    @learning_rate = data[:learning_rate] || 0.1
   end
 end
