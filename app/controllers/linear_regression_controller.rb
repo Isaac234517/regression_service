@@ -16,7 +16,7 @@ class LinearRegressionController < ApplicationController
   	num = 0
   	begin 
   	  gradient = @handler.gradient_descent
-  	  @handler.update_thetas(gradient,0.01)
+  	  @handler.update_thetas(gradient,@learning_rate)
   	  p "After upate thetas at iteration #{num+1} #{@handler.thetas.inspect}"
   	  new_cost = @handler.cost_function
   	  break if new_cost - cost >=0.01
@@ -60,6 +60,7 @@ class LinearRegressionController < ApplicationController
     @handler = LinearRegression.new(x_y[0], x_y[1], thetas)
     @iterations =  data[:iterations] if data.key?(:iterations)
     @standardization = data[:standardization]
+    @learning_rate = data[:learning_rate] || 0.1
   end
 
 end
