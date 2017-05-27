@@ -58,8 +58,8 @@ class LogisticRegressionController < ApplicationController
       thetas = data[:thetas]
     end
     @handler = LogisticRegression.new(x_y[0], x_y[1], thetas)
-    @iterations =  data[:iterations] if data.key?(:iterations)
-    @standardization = data[:standardization]
+    @iterations =  data[:iterations] || 1
+    @standardization = data[:standardization] || false
     @learning_rate = data[:learning_rate] || 0.1
   end
 end
