@@ -23,7 +23,7 @@ class LinearRegression
      summatation / ((2 * @x.length).to_f)
   end
 
-  def gradient_descent
+  def gradient
   	 trans_x = MathUtil.transpose(@x)
      h = hypothesis
      difference = h.map.with_index do |element, index|
@@ -31,7 +31,11 @@ class LinearRegression
      end
      grad = trans_x.map.with_index do |element, index|
      	summatation = element.each_with_index.inject(0) do |sum,(sub_element, sub_index)|
-     		sum+= sub_element * difference[sub_index]
+     		if index !=0
+         sum+= sub_element * difference[sub_index]
+        else
+         sum+=difference[sub_index]
+        end
      	end
      	summatation/(@x.length).to_f
      end

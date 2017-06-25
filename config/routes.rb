@@ -4,7 +4,7 @@ Rails.application.routes.draw do
  match 'logistic_regression/calcuate_cost', to: 'logistic_regression#calcuate_cost', via: [:post]
  match 'logistic_regression/cost_and_gradient_descent', to: 'logistic_regression#cost_and_gradient_descent', via: [:post]
  match 'linear_regression/calculate_cost', to: 'linear_regression#calculate_cost', via: [:post]
- match 'linear_regression/cost_and_gradient_descent', to: 'linear_regression#cost_and_gradient_descent', via: [:post]
+ match 'linear_regression/cost_and_gradient', to: 'linear_regression#cost_and_gradient', via: [:post]
  match 'linear_regression/find_best_thetas', to: 'linear_regression#find_best_thetas', via: [:post]
  #post 'regression/logistic_regression_best_theta'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

@@ -17,15 +17,15 @@ describe LinearRegression do
   	it 'should calculate expect cost'do
   		x_y = LinearRegression.divide_data(@dataset)
   		thetas = @dataset[0].map{|ele| 0}
-  		logistic = LinearRegression.new(x_y[0], x_y[1], thetas)
-  		expect(logistic.cost_function).to eq(32.072733877455654)
+  		linear = LinearRegression.new(x_y[0], x_y[1], thetas)
+  		expect(linear.cost_function).to eq(32.072733877455654)
     end
 
     it 'should calcuate correct gradient at thets [0,0,0]' do
     	x_y = LinearRegression.divide_data(@dataset)
     	thetas = @dataset[0].map{|ele| 0}
-    	logistic = LinearRegression.new(x_y[0], x_y[1], thetas)
-    	expect(logistic.gradient_descent).to eq([-5.83913505154639,-65.32884974555672])
+    	linear = LinearRegression.new(x_y[0], x_y[1], thetas)
+    	expect(linear.gradient).to eq([-5.83913505154639,-65.32884974555672])
     end
   end
 end

@@ -15,7 +15,7 @@ class LinearRegressionController < ApplicationController
   	p "Initial thetas is #{@handler.thetas.inspect}"
   	num = 0
   	begin 
-  	  gradient = @handler.gradient_descent
+  	  gradient = @handler.gradient
   	  @handler.update_thetas(gradient,@learning_rate)
   	  p "After upate thetas at iteration #{num+1} #{@handler.thetas.inspect}"
   	  new_cost = @handler.cost_function
@@ -35,12 +35,12 @@ class LinearRegressionController < ApplicationController
     send_respond({'cost' => cost})
   end
 
-  def cost_and_gradient_descent
+  def cost_and_gradient
   	p "Calculate cost at theats #{@handler.thetas.inspect}"
   	cost = @handler.cost_function
   	p "Cost is #{cost}"
   	p "Calcuate its gradient at thetas#{@handler.thetas.inspect}"
-  	gradient = @handler.gradient_descent
+  	gradient = @handler.gradient
   	@handler.update_thetas(gradient,0.01)
   	p @handler.thetas
   	p "gradient is #{gradient.inspect}"
