@@ -16,14 +16,13 @@ class LogisticRegressionController < ApplicationController
     p "Initial Thetas is #{@handler.thetas.inspect}"
     num = 0
     begin
-      num+=1
       gradient = @handler.gradient_descent
       @handler.update_thetas(gradient, @learning_rate)
-      p "thetas #{@handler.thetas.inspect} at iteration #{num}"
+      p "After upate thetas at iteration #{num+1} #{@handler.thetas.inspect}"
       new_cost = @handler.cost_function
-      p "new cost #{new_cost}"
       break if new_cost - cost>=0.01
       cost = new_cost
+      num+=1
     end while num < @iterations
 
     p "Best thetas is #{@handler.thetas.inspect} after running #{num} iterations"
@@ -37,12 +36,12 @@ class LogisticRegressionController < ApplicationController
     send_respond({'cost' => cost})
   end
 
-  def cost_and_gradient_descent
+  def cost_and_gradient
     p 'calculate cost function at thetas #{@handler.thetas.inspect}'
     cost = @handler.cost_function
     p "cost is  #{@handler.cost_function}"
     p "run gradient descent at thetas #{@handler.thetas.inspect}"
-    gradient = @handler.gradient_descent
+    gradient = @handler.gradient
     p "gradient is #{gradient.inspect}"
     send_respond({:cost => cost, :gradient => gradient})
   end

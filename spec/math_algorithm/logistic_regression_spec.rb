@@ -25,7 +25,7 @@ describe LogisticRegression do
     	x_y = LogisticRegression.divide_data(@dataset)
     	thetas = @dataset[0].map{|ele| 0}
     	logistic = LogisticRegression.new(x_y[0], x_y[1], thetas)
-    	expect(logistic.gradient_descent).to eq([-0.1,-12.00921658929115,-11.262842205513591])
+    	expect(logistic.gradient).to eq([-0.1,-12.00921658929115,-11.262842205513591])
     end
   end
 end
