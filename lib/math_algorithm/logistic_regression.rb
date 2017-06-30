@@ -25,8 +25,8 @@ class LogisticRegression
 
   def cost_function
   	z = z_func
-  	sigma_part = hy_part(z)
-  	cost = 1/(@x.length.to_f) * sigma(sigma_part)
+  	sigma_part = sigma(hy_part(z))
+  	cost = 1/(@x.length.to_f) * sigma_part
   end
 
   def sigmoid(z)
@@ -36,12 +36,6 @@ class LogisticRegression
   def hy_part(z)
   	ans = []
   	z.each_with_index do |element, index|
-      #p "element#{element}"
-      #p (1-@y[index]) * Math.log(1-sigmoid(element))
-      #part1 = (0-@y[index]) * Math.log(sigmoid(element))
-      #part2 = (1-@y[index]) * Math.log(1-sigmoid(element))
-      #part2 = 0 if part2.nan?
-      #ans << (part1-part2)
   		ans << ((0-@y[index]) * Math.log(sigmoid(element))- (1-@y[index]) * Math.log(1-sigmoid(element)))
   	end
   	ans

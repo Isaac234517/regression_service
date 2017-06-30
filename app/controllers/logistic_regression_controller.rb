@@ -13,36 +13,36 @@ class LogisticRegressionController < ApplicationController
     end
 
     cost = @handler.cost_function
-    p "Initial Thetas is #{@handler.thetas.inspect}"
+    Rails.logger.info "Initial Thetas is #{@handler.thetas.inspect}"
     num = 0
     begin
       gradient = @handler.gradient_descent
       @handler.update_thetas(gradient, @learning_rate)
-      p "After upate thetas at iteration #{num+1} #{@handler.thetas.inspect}"
+      Rails.logger.info "After upate thetas at iteration #{num+1} #{@handler.thetas.inspect}"
       new_cost = @handler.cost_function
       break if new_cost - cost>=0.01
       cost = new_cost
       num+=1
     end while num < @iterations
 
-    p "Best thetas is #{@handler.thetas.inspect} after running #{num} iterations"
+    Rails.logger.info "Best thetas is #{@handler.thetas.inspect} after running #{num} iterations"
     send_respond({'best_thetas' => @handler.thetas})
   end
 
   def calcuate_cost
-    p "Calculate logistic regression cose at thetas #{@handler.thetas.inspect}"
+    Rails.logger.info "Calculate logistic regression cose at thetas #{@handler.thetas.inspect}"
     cost = @handler.cost_function
-    p "Cost is #{cost}"
+    Rails.logger.info "Cost is #{cost}"
     send_respond({'cost' => cost})
   end
 
   def cost_and_gradient
-    p 'calculate cost function at thetas #{@handler.thetas.inspect}'
+    Rails.logger.info 'calculate cost function at thetas #{@handler.thetas.inspect}'
     cost = @handler.cost_function
-    p "cost is  #{@handler.cost_function}"
-    p "run gradient descent at thetas #{@handler.thetas.inspect}"
+    Rails.logger.info "cost is  #{@handler.cost_function}"
+    Rails.logger.info "calculate gradient at thetas #{@handler.thetas.inspect}"
     gradient = @handler.gradient
-    p "gradient is #{gradient.inspect}"
+    Rails.logger.info "gradient is #{gradient.inspect}"
     send_respond({:cost => cost, :gradient => gradient})
   end
 
